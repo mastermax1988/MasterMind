@@ -8,6 +8,16 @@ public class Row
     private final int size;
     private Pin[] pins;
     private Marker marker;
+    public Row Clone()
+    {
+        return new Row(pins.clone());
+    }
+    private Row(Pin[] p)
+    {
+        pins = p;
+        size = p.length;
+    }
+
     public Row(int size)
     {
         pins = new Pin[size];
@@ -18,6 +28,23 @@ public class Row
         this(p.length);
         setPins(p);
     }
+    public Row(PinColor[] p, Marker m)
+    {
+        this(p);
+        marker = m;
+    }
+    @Override
+    public String toString()
+    {
+        String s="";
+        for(var p: pins)
+            s +=p.getColor() + " ";
+        return  s;
+    }
+    public void setPin(PinColor c, int index)
+    {
+        pins[index] = new Pin(c);
+    }
     public void setPins(PinColor[] p)
     {
         for(int i=0;i<size;i++)
@@ -27,9 +54,20 @@ public class Row
     {
         int iRet=0;
         for(Pin p : pins)
-           if(p.getColor() == c)
-               iRet++;
+        {
+            if(p==null)
+                continue;
+            if (p.getColor() == c)
+                iRet++;
+        }
         return iRet;
+    }
+    public boolean bAllPinsSet()
+    {
+        for(Pin p : pins)
+            if(p==null)
+                return false;
+            return true;
     }
     public PinColor getPinColor(int i)
     {
@@ -58,6 +96,10 @@ public class Row
             return  false;
         Marker m = getMarkers(r);
         return m.getRed() == marker.getRed() && m.getWhite()==marker.getWhite();
+    }
+    public void setMarker(Marker m)
+    {
+        marker = m;
     }
     public Marker getMarkers(Row r)
     {
