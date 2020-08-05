@@ -7,7 +7,7 @@ public class Row
 {
     private final int size;
     private Pin[] pins;
-
+    private Marker marker;
     public Row(int size)
     {
         pins = new Pin[size];
@@ -47,6 +47,17 @@ public class Row
     public void setPinChecked(int i)
     {
         pins[i].setChecked();
+    }
+    public void checkAndSetMarkers(Row r)
+    {
+        marker = getMarkers(r);
+    }
+    public boolean rowPossible(Row r)
+    {
+        if(marker == null)
+            return  false;
+        Marker m = getMarkers(r);
+        return m.getRed() == marker.getRed() && m.getWhite()==marker.getWhite();
     }
     public Marker getMarkers(Row r)
     {
