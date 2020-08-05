@@ -8,10 +8,11 @@ public class MainClass
     public static void main(String[] args)
     {
         int iSize=4;
-        boolean bMulti=false;
+        boolean bMulti=true;
         boolean bHole=false;
         Board b = new Board(iSize,bMulti,bHole);
-        while(true)
+        b.printAllPossibleRows();
+        while(!b.bSolved())
         {
             Object[] options = PinColor.values();
             int selelected;
@@ -28,8 +29,22 @@ public class MainClass
             Object[] msg = {"Rot", redText, "Weiß", whiteText};
             JOptionPane pane = new JOptionPane(msg, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_OPTION);
             pane.createDialog(null, "MarkerPins festlegen").setVisible(true);
-            r.setMarker(new Marker(Integer.parseInt(redText.getText()),Integer.parseInt(whiteText.getText())));
+            int ir=0,iw=0;
+            try
+            {
+                ir=Integer.parseInt(redText.getText());
+            }
+            catch (Exception e){}
+           try
+            {
+                iw=Integer.parseInt(whiteText.getText());
+            }
+            catch (Exception e){}
+            r.setMarker(new Marker(ir,iw));
             b.addRow(r);
+            b.updatePossibleRows();
+            b.printAllPossibleRows();
+            b.printSuggestion();
         }
     }
 }

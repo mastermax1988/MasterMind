@@ -1,8 +1,5 @@
 package MasterMind;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Row
 {
     private final int size;
@@ -88,20 +85,24 @@ public class Row
     }
     public void checkAndSetMarkers(Row r)
     {
-        marker = getMarkers(r);
+        marker = generateMarker(r);
     }
     public boolean rowPossible(Row r)
     {
         if(marker == null)
             return  false;
-        Marker m = getMarkers(r);
+        Marker m = generateMarker(r);
         return m.getRed() == marker.getRed() && m.getWhite()==marker.getWhite();
     }
     public void setMarker(Marker m)
     {
         marker = m;
     }
-    public Marker getMarkers(Row r)
+    public Marker getMarker()
+    {
+        return marker;
+    }
+    public Marker generateMarker(Row r)
     {
         int iRed=0, iWhite=0;
         r.uncheckAllPins();

@@ -2,6 +2,7 @@ package MasterMind;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Board
 {
@@ -16,6 +17,10 @@ public class Board
         bMultiColor = bD;
         bHole = bH;
         allPossibleRows = generateAllPossibleRows();
+    }
+    public boolean bSolved()
+    {
+        return allPossibleRows.size() == 1;
     }
     private ArrayList<Row> generateAllPossibleRows()
     {
@@ -48,12 +53,37 @@ public class Board
             ret = tmpRow;
             iIndex++;
         }
-        for(var r : ret)
-            System.out.println(r);
         return ret;
     }
 
-
+    public void updatePossibleRows()
+    {
+        var it = allPossibleRows.iterator();
+        while(it.hasNext())
+        {
+            var r = it.next();
+            for(var row : rows)
+            {
+                var m = row.generateMarker(r);
+                var om = row.getMarker();
+                if(m.getWhite() != om.getWhite() || m.getRed() != om.getRed())
+                    it.remove();
+            }
+        }
+    }
+        public void printAllPossibleRows()
+        {
+            System.out.println("\n\n");
+            for(var r : allPossibleRows)
+                System.out.println(r.toString());
+            System.out.println("Es gibt noch " + allPossibleRows.size() + " Möglichkeiten");
+        }
+    public void printSuggestion()
+    {
+        Random rnd = new Random();
+        for(int i=0;i<10;i++)
+            System.out.println("Vorschlag: " + allPossibleRows.get(rnd.nextInt(allPossibleRows.size())).toString());
+    }
     public void addRow(Row r)
     {
         rows.add(r);
@@ -61,7 +91,7 @@ public class Board
     public boolean checkRow(Row row)
     {
         for(Row r : rows)
-            r.getMarkers(row);
+            r.generateMarker(row);
         return  true;
     }
 }
